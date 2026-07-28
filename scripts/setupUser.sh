@@ -86,14 +86,18 @@ update_conf()
    else
         echo "could not find $sudofile"
    fi
-   if [ -d $sshdconfd ];then
-       if [ -f $sshdconfd/60-cloudimg-settings.conf ];then
-            sed -i '/PasswordAuthentication.*no/d' $sshdconfd/60-cloudimg-settings.conf
-            sed -i '/PasswordAuthentication.*yes/d' $sshdconfd/60-cloudimg-settings.conf
-            echo "PasswordAuthentication yes" >> $sshdconfd/60-cloudimg-settings.conf
-       else
-          echo "$sshdconfd/60-cloudimg-settings.conf does not exist"  
-       fi
+   if [ -d $sshdconfd ]; then
+    if [ -f $sshdconfd/60-cloudimg-settings.conf ]; then
+        sed -i '/PasswordAuthentication.*no/d' $sshdconfd/60-cloudimg-settings.conf
+        sed -i '/PasswordAuthentication.*yes/d' $sshdconfd/60-cloudimg-settings.conf
+        echo "PasswordAuthentication yes" >> $sshdconfd/60-cloudimg-settings.conf
+    elif [ -f $sshdconfd/50-redhat.conf ]; then
+        sed -i '/PasswordAuthentication.*no/d' $sshdconfd/50-redhat.conf
+        sed -i '/PasswordAuthentication.*yes/d' $sshdconfd/50-redhat.conf
+        echo "PasswordAuthentication yes" >> $sshdconfd/50-cloud-init.conf
+    else
+        echo "$sshdconfd/*.conf does not exist"
+    fi
    else
       echo "$sshdconfd does not exist... continue with $sshdfile"
    fi          
