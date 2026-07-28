@@ -94,7 +94,7 @@ update_conf()
     elif [ -f $sshdconfd/50-redhat.conf ]; then
         sed -i '/PasswordAuthentication.*no/d' $sshdconfd/50-redhat.conf
         sed -i '/PasswordAuthentication.*yes/d' $sshdconfd/50-redhat.conf
-        echo "PasswordAuthentication yes" >> $sshdconfd/50-cloud-init.conf
+        echo "PasswordAuthentication yes" >> $sshdconfd/50-redhat.conf
     else
         echo "$sshdconfd/*.conf does not exist"
     fi
@@ -112,7 +112,7 @@ update_conf()
         #sed -i '/PermitRootLogin.*prohibit-password/d' $sshdfile
         #echo "PermitRootLogin yes" >> $sshdfile
         echo "updated $sshdfile Successfully -- restarting sshd service"
-        systemctl restart ssh.service
+        systemctl restart sshd.service
    else
         echo "could not find $sshdfile"
    fi
